@@ -31,13 +31,14 @@ async function startServer() {
   initSocket(server);
 
   try {
-    await initDatabase();
-    databaseReady = true;
-    await ensureDemoOnFirstAccess();
-    try {
-      await deactivateExpiredDrivers();
-    } catch (expiryErr) {
-      console.error("Initial expiry sync failed:", expiryErr);
+    databaseReady = await initDatabase();
+    if (databaseReady) {
+      await ensureDemoOnFirstAccess();
+      try {
+        await deactivateExpiredDrivers();
+      } catch (expiryErr) {
+        console.error("Initial expiry sync failed:", expiryErr);
+      }
     }
   } catch (error) {
     console.error("Server startup warning: database is offline, running in degraded mode.", error);
