@@ -2,9 +2,7 @@ const { Pool } = require("pg");
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: { rejectUnauthorized: false },
   max: 10,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 10000,
@@ -13,27 +11,19 @@ const pool = new Pool({
 async function initDatabase() {
   try {
     console.log("[DB] Connecting...");
-
     const client = await pool.connect();
-
-    const result = await client.query("SELECT NOW()");
-    console.log("[DB] Connected at:", result.rows[0].now);
-
+    await client.query("SELECT 1");
     client.release();
-
+    console.log("[DB] Connected");
     return true;
   } catch (err) {
-    console.error("[DB] CONNECTION ERROR:", err.message);
+    console.error("[DB ERROR]:", err.message);
     return false;
   }
 }
 
 function isDatabaseAvailable() {
-  return true; // we trust init check
+  return true;
 }
 
-module.exports = {
-  pool,
-  initDatabase,
-  isDatabaseAvailable,
-};
+module.exports = { pool, initDatabase, isDatabaseAvailable };
