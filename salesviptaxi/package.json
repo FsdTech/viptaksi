@@ -1,0 +1,24 @@
+{
+  "name": "salesdemov1",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Isolated sales demo: seed, reset, demo API (does not modify main app)",
+  "scripts": {
+    "sales:seed": "ts-node -r dotenv/config seed/cli.ts",
+    "sales:reset": "ts-node -r dotenv/config scripts/reset.ts"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.0",
+    "@types/pg": "^8.11.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
