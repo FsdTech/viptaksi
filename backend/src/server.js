@@ -1,62 +1,71 @@
+require("dns").setDefaultResultOrder("ipv4first");
+
 const http = require("http");
 const { loadEnv } = require("./config/env");
 const { createApp } = require("./app");
 const { initSocket } = require("./sockets");
-const { initDatabase } = require("./db");
+const { pool } = require("./db");
 const { deactivateExpiredDrivers } = require("./services/paymentExpiry.service");
-const { ensureDemoOnFirstAccess } = require("./salesdemov1/demoClient");
 
-/* EKLENDİ */
+async function testConnection() {
+  await pool.query("SELECT 1");
+  console.log("DB connected");
+}
+
+async function waitForDB() {
+  let retries = 5;
+  while (retries) {
+    try {
+      await testConnection();
+      return;
+    } catch (err) {
+      console.log("DB retry...");
+      await new Promise((r) => setTimeout(r, 2000));
+      retries--;
+    }
+  }
+}
+
 async function startServer() {
   const env = loadEnv();
   const app = createApp();
+
   let databaseReady = false;
-  /* ADDED */
+
   app.get("/", (req, res) => {
     res.json({
       status: "OK",
       message: "VipStar Backend Running",
-      version: "1.0.0",
     });
   });
+
   app.get("/health/db", (_req, res) => {
     res.status(databaseReady ? 200 : 503).json({
       ok: databaseReady,
-      service: "viptaksi-backend-db",
+      service: "viptaksi-db",
       status: databaseReady ? "online" : "offline",
     });
   });
-  const server = http.createServer(app);
 
+  const server = http.createServer(app);
   initSocket(server);
 
   try {
-    databaseReady = await initDatabase();
-    if (databaseReady) {
-      await ensureDemoOnFirstAccess();
-      try {
-        await deactivateExpiredDrivers();
-      } catch (expiryErr) {
-        console.error("Initial expiry sync failed:", expiryErr);
-      }
+    await waitForDB();
+    databaseReady = true;
+
+    try {
+      await deactivateExpiredDrivers();
+    } catch (e) {
+      console.error("Expiry sync failed:", e);
     }
-  } catch (error) {
-    console.error("Server startup warning: database is offline, running in degraded mode.", error);
+  } catch (err) {
+    console.error("DB FAILED:", err);
   }
 
   server.listen(env.port, () => {
-    console.log(`VipStar Taksi API + Socket.IO listening on port ${env.port} (${env.nodeEnv})`);
-    if (!databaseReady) {
-      console.warn("Database is not reachable. Start PostgreSQL on port 5432 to enable DB features.");
-    }
+    console.log(`Server running on ${env.port}`);
   });
-
-  setInterval(() => {
-    if (!databaseReady) return;
-    void deactivateExpiredDrivers().catch((error) => {
-      console.error("Expiry sync interval failed:", error);
-    });
-  }, 60_000);
 }
 
 module.exports = { startServer };
