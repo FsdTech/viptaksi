@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { body } = require("express-validator");
+const { pool } = require("../db");
 const driverController = require("../controllers/driver.controller");
 const { authenticate } = require("../middlewares/authenticate");
 const { authorize } = require("../middlewares/authorize");
@@ -18,7 +19,17 @@ const validate = (req, res, next) => {
   next();
 };
 
-router.get("/", driverController.list);
+router.get("/", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT id, user_id, vehicle_type_id, is_online, lat, lng, rating, phone, plate, vehicle, status FROM drivers WHERE is_demo = true LIMIT 50"
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "failed" });
+  }
+});
 router.post("/", authenticate, authorizePanel, requireSuperAdmin, driverController.createByAdmin);
 router.get("/:id", driverController.detail);
 router.put("/:id", authenticate, authorizePanel, requireSuperAdmin, driverController.updateDetail);
