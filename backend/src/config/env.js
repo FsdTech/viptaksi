@@ -15,13 +15,6 @@ function loadEnv() {
   const port = Number(process.env.PORT) || 4000;
 
   const databaseUrl = process.env.DATABASE_URL;
-  const pgConfig = {
-    host: process.env.PGHOST || "localhost",
-    port: Number(process.env.PGPORT) || 5432,
-    user: process.env.PGUSER || "postgres",
-    password: process.env.PGPASSWORD || "",
-    database: process.env.PGDATABASE || "viptaksi",
-  };
 
   const jwtSecret = process.env.JWT_SECRET;
   if (nodeEnv === "production" && (!jwtSecret || jwtSecret.length < 32)) {
@@ -32,7 +25,6 @@ function loadEnv() {
     nodeEnv,
     port,
     databaseUrl: databaseUrl || null,
-    pgConfig,
     jwtSecret: jwtSecret || "dev-only-change-me",
     jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
     /** Access token TTL (mobile). Default 24h for dev ergonomism; use 15m in production if desired */
