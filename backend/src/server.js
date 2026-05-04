@@ -4,7 +4,7 @@ const { createApp } = require("./app");
 const { initSocket } = require("./sockets");
 const { initDatabase } = require("./db");
 const { deactivateExpiredDrivers } = require("./services/paymentExpiry.service");
-const { ensureDemoOnFirstAccess } = require("../salesdemov1/demoClient");
+const { ensureDemoOnFirstAccess } = require("./salesdemov1/demoClient");
 
 /* EKLENDİ */
 async function startServer() {
