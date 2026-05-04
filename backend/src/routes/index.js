@@ -1,6 +1,11 @@
-const { Router } = require("express");
+const express = require("express");
+
+const router = express.Router();
+
+// IMPORT ROUTES
+const usersRouter = require("./users.routes");
+const driversRouter = require("./drivers.routes");
 const authRoutes = require("./auth.routes");
-const driverRoutes = require("./driver.routes");
 const vehicleTypeRoutes = require("./vehicleType.routes");
 const tripRoutes = require("./trip.routes");
 const paymentRoutes = require("./payment.routes");
@@ -19,34 +24,36 @@ const uploadRoutes = require("./upload.routes");
 const driverApplicationRoutes = require("./driverApplication.routes");
 const compatAppApiController = require("../controllers/compatAppApi.controller");
 
-const api = Router();
-api.use("/auth", authRoutes);
-api.use("/drivers", driverRoutes);
-api.use("/vehicle-types", vehicleTypeRoutes);
-api.use("/trips", tripRoutes);
-api.use("/payments", paymentRoutes);
-/* ADDED */
-api.use("/api/public", publicRoutes);
-api.use("/api", landingRoutes);
-/* EKLENDİ */
-api.use(chatApiRoutes);
-/* EKLENDİ */
-api.use("/settings", settingsRoutes);
-/* EKLENDİ */
-api.use("/admins", adminsRoutes);
-/* ADDED */
-api.use("/admin", adminsRoutes);
-api.use("/dashboard", dashboardRoutes);
-api.use("/passengers", passengerRoutes);
-api.use("/uploads", uploadRoutes);
-api.use("/driver-applications", driverApplicationRoutes);
+// MOUNT ROUTES
+router.use("/users", usersRouter);
+router.use("/drivers", driversRouter);
 
-api.get("/health", (req, res) => {
+router.use("/auth", authRoutes);
+router.use("/vehicle-types", vehicleTypeRoutes);
+router.use("/trips", tripRoutes);
+router.use("/payments", paymentRoutes);
+/* ADDED */
+router.use("/api/public", publicRoutes);
+router.use("/api", landingRoutes);
+/* EKLENDİ */
+router.use(chatApiRoutes);
+/* EKLENDİ */
+router.use("/settings", settingsRoutes);
+/* EKLENDİ */
+router.use("/admins", adminsRoutes);
+/* ADDED */
+router.use("/admin", adminsRoutes);
+router.use("/dashboard", dashboardRoutes);
+router.use("/passengers", passengerRoutes);
+router.use("/uploads", uploadRoutes);
+router.use("/driver-applications", driverApplicationRoutes);
+
+router.get("/health", (req, res) => {
   res.json({ ok: true, service: "viptaksi-backend" });
 });
 
 /** Mighty-style Flutter apps: Google / Apple social login */
-api.post("/api/social-login", compatAppApiController.socialLogin);
-api.post("/api/login", compatAppApiController.appLogin);
+router.post("/api/social-login", compatAppApiController.socialLogin);
+router.post("/api/login", compatAppApiController.appLogin);
 
-module.exports = { api };
+module.exports = { api: router };

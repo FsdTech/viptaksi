@@ -18,9 +18,9 @@ const validate = (req, res, next) => {
   next();
 };
 
-router.get("/", authenticate, authorizePanel, driverController.list);
+router.get("/", driverController.list);
 router.post("/", authenticate, authorizePanel, requireSuperAdmin, driverController.createByAdmin);
-router.get("/:id", authenticate, authorizePanel, driverController.detail);
+router.get("/:id", driverController.detail);
 router.put("/:id", authenticate, authorizePanel, requireSuperAdmin, driverController.updateDetail);
 
 router.post(
