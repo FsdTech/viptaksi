@@ -1,0 +1,325 @@
+@import "tailwindcss";
+
+/* BASE */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0a0a0a;
+  color: white;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* EKLENDİ - 2026-04-04 — Leaflet divIcon şeffaf (sarı araç SVG’si) */
+.vehicle-leaflet-marker {
+  background: transparent !important;
+  border: none !important;
+}
+/* Rotasyon JS’te lerp ile; ekstra CSS transition titremeye yol açmasın */
+
+/* ===== TYPOGRAPHY SYSTEM ===== */
+
+.t-page {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: #fff;
+}
+
+.t-desc {
+  font-size: 14px;
+  color: #d1d5db;
+  letter-spacing: 0.025em;
+  line-height: 1.625;
+}
+
+.t-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: #fff;
+}
+
+.t-label {
+  font-size: 12px;
+  color: #6b7280;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.t-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.025em;
+}
+
+.t-meta {
+  font-size: 12px;
+  color: #9ca3af;
+  letter-spacing: 0.025em;
+}
+
+/* ===== INPUT SYSTEM (TEK TANIM) ===== */
+
+.input {
+  width: 100%;
+  background: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 12px 14px;
+  color: white;
+  transition: all 0.25s ease;
+}
+
+.input:hover {
+  border-color: #444;
+}
+
+.input:focus {
+  border-color: #f5b700;
+  box-shadow:
+    0 0 0 2px rgba(245,183,0,0.15),
+    0 0 25px rgba(245,183,0,0.08);
+  background: #0d0d0d;
+}
+
+/* LABEL / META */
+
+.label {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-bottom: 6px;
+  letter-spacing: 0.4px;
+}
+
+.meta {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* ===== INFO BOX ===== */
+
+.info-box {
+  background: #111;
+  border: 1px solid #2a2a2a;
+  padding: 14px;
+  border-radius: 16px;
+  color: #d1d5db;
+  font-size: 14px;
+}
+
+/* ===== SUMMARY ===== */
+
+.summary-box {
+  background: #0f0f0f;
+  border: 1px solid #2a2a2a;
+  padding: 16px;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== BUTTON ===== */
+
+.btn-primary {
+  background: #f5b700;
+  color: black;
+  padding: 14px 30px;
+  border-radius: 16px;
+  font-weight: 600;
+  transition: 0.25s;
+  box-shadow: 0 10px 40px rgba(245,183,0,0.35);
+}
+
+.btn-primary:hover {
+  background: #ffd034;
+  transform: scale(1.05);
+}
+
+/* ===== CARD SYSTEM (TEK VE NET) ===== */
+
+.card-premium {
+  transition: all 0.3s ease;
+}
+
+.card-premium:hover {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow:
+    0 0 0 1px rgba(245,183,0,0.4),
+    0 20px 50px rgba(245,183,0,0.15);
+}
+
+/* glow */
+
+.card-glow {
+  position: relative;
+}
+
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 26px;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(245, 183, 0, 0.35),
+    rgba(245, 183, 0, 0.15),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  /* EKLENDİ - 2026-04-04 — dekoratif katman input/tıklamayı yutmasın */
+  pointer-events: none;
+}
+
+.card-glow:hover::before {
+  opacity: 1;
+}
+
+/* ===== SCROLL ===== */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 10px;
+}
+
+/* ===== LAYOUT ===== */
+
+html, body, #root {
+  height: 100%;
+  overflow: auto;
+}
+
+/* CARD HOVER GLOW */
+.card-glow {
+  transition: all 0.35s ease;
+  position: relative;
+}
+
+.card-glow:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.8),
+    0 0 40px rgba(245,183,0,0.15);
+}
+
+/* INPUT GLOW */
+.input-glow {
+  transition: all 0.25s ease;
+}
+
+.input-glow:focus-within {
+  border-color: #f5b700 !important;
+  box-shadow: 0 0 0 2px rgba(245,183,0,0.2);
+}
+
+/* BUTTON GLOW */
+.btn-glow {
+  transition: all 0.3s ease;
+}
+
+.btn-glow:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 40px rgba(245,183,0,0.5),
+    0 0 20px rgba(245,183,0,0.4);
+}
+
+/* Payments action icon buttons */
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #2a2a2a;
+  background: #111111;
+  color: #e5e7eb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+  border-color: #3a3a3a;
+  background: #1a1a1a;
+}
+
+.icon-btn.success {
+  border-color: rgba(34, 197, 94, 0.35);
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.icon-btn.success:hover {
+  background: rgba(34, 197, 94, 0.2);
+}
+
+.icon-btn.danger {
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.icon-btn.danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+/* VALUE CHANGE ANIMATION */
+.value-pop {
+  animation: pop 0.25s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.9); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+input {
+  appearance: none;
+}
+/* Native radio/checkbox/color — global appearance:none bunları görünmez yapıyordu */
+input[type="radio"],
+input[type="checkbox"],
+input[type="color"],
+input[type="range"] {
+  appearance: auto;
+}
+/* EKLENDİ */
+.input-dark {
+  width: 100%;
+  background: linear-gradient(180deg, #141414, #0f0f0f);
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: white;
+  font-size: 14px;
+  transition: all 0.25s ease;
+}
+
+/* EKLENDİ */
+.input-dark::placeholder {
+  color: #666;
+}
+
+/* EKLENDİ */
+.input-dark:focus {
+  outline: none;
+  border-color: #f5b700;
+  box-shadow: 0 0 0 1px rgba(245, 183, 0, 0.4),
+              0 0 12px rgba(245, 183, 0, 0.2);
+  background: #141414;
+}
+
+.ProseMirror {
+  color: white;
+  outline: none;
+}

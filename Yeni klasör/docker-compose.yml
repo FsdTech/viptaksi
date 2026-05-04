@@ -1,0 +1,22 @@
+# Varsayılan bağlantı: postgresql://postgres:1234@localhost:5432/viptaksi (backend/src/db.js)
+# Çalıştırma: docker compose up -d
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: viptaksi-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: viptaksi
+    ports:
+      - "5432:5432"
+    volumes:
+      - viptaksi_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d viptaksi"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  viptaksi_pgdata:

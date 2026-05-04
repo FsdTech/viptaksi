@@ -1,0 +1,4 @@
+[build]
+  base = "sales-demo"
+  publish = "dist"
+  command = "npm install && npm run build"
