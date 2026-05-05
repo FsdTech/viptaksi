@@ -5,6 +5,7 @@ const { loadEnv } = require("./config/env");
 const { createApp } = require("./app");
 const { initSocket } = require("./sockets");
 const { testConnection } = require("./db");
+const { ensureDemoOnFirstAccess } = require("./salesdemov1/demoClient");
 const { deactivateExpiredDrivers } = require("./services/paymentExpiry.service");
 
 async function waitForDB() {
@@ -48,6 +49,12 @@ async function startServer() {
   try {
     await waitForDB();
     databaseReady = true;
+
+    try {
+      await ensureDemoOnFirstAccess();
+    } catch (demoErr) {
+      console.error("Demo init failed:", demoErr);
+    }
 
     try {
       await deactivateExpiredDrivers();
