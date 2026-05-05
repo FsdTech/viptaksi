@@ -4,13 +4,8 @@ const http = require("http");
 const { loadEnv } = require("./config/env");
 const { createApp } = require("./app");
 const { initSocket } = require("./sockets");
-const { pool } = require("./db");
+const { testConnection } = require("./db");
 const { deactivateExpiredDrivers } = require("./services/paymentExpiry.service");
-
-async function testConnection() {
-  await pool.query("SELECT 1");
-  console.log("DB connected");
-}
 
 async function waitForDB() {
   let retries = 5;

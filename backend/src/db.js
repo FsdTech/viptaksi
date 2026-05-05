@@ -1,15 +1,17 @@
 const { Pool } = require("pg");
 
-console.log("DB URL:", process.env.DATABASE_URL);
-
 const pool = new Pool({
-  connectionString:
-    "postgresql://postgres:Salestaxi123.@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true",
+  connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
 });
+
+async function testConnection() {
+  await pool.query("SELECT 1");
+  console.log("DB connected");
+}
 
 function isDatabaseAvailable() {
   return true;
 }
 
-module.exports = { pool, isDatabaseAvailable };
+module.exports = { pool, testConnection, isDatabaseAvailable };
